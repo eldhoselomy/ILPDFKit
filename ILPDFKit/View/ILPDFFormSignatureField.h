@@ -1,6 +1,6 @@
 // ILPDFFormSignatureField.h
 //
-// Copyright (c) 2018 Derek Blair
+// Copyright (c) 2016 Derek Blair
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +28,13 @@ NS_ASSUME_NONNULL_BEGIN
 /** The ILPDFFormSignatureField represents a view for a PDF signature field. Not currently implemented.
  */
 @interface ILPDFFormSignatureField : ILPDFWidgetAnnotationView
+
+@property (strong, nonatomic) UIButton* signatureButton;
+@property (strong, nonatomic) UIImageView* signatureImage;
+- (void) removeButtonTitle;
+- (void) informDelegateAboutNewImage;
++ (void) openSignatureView;
++ (void)drawWithRect:(CGRect)frame context:(CGContextRef)ctx withImage:(UIImage*) image;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -1,6 +1,6 @@
 // ILPDFViewController.m
 //
-// Copyright (c) 2018 Derek Blair
+// Copyright (c) 2016 Derek Blair
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,27 +22,56 @@
 
 #import <ILPDFKit/ILPDFKit.h>
 #import "ILPDFFormContainer.h"
+#import "ILPDFSignatureController.h"
+#import "ILPDFFormSignatureField.h"
 
-@interface ILPDFViewController(Private)
+@interface ILPDFViewController(Private) <ILPDFSignatureControllerDelegate>
 - (void)loadPDFView;
-@property (nonatomic, strong) ILPDFView *pdfView;
 @end
 
 
-@implementation ILPDFViewController
+@implementation ILPDFViewController {
+    ILPDFView *_pdfView;
+    ILPDFSignatureController *signatureController;
+    ILPDFFormSignatureField *signatureField;
+}
+
 #pragma mark - UIViewController
+
+- (void) viewDidLoad {
+    
+    [super viewDidLoad];
+
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+    
+    [super viewWillAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(showSignatureViewController:)
+                                                 name:@"SignatureNotification"
+                                               object:nil];
+    
+    
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    // Alter or remove to define your own layout logic for the ILPDFView.
+    _pdfView.frame = CGRectMake(0,self.topLayoutGuide.length,self.view.bounds.size.width,self.view.bounds.size.height-self.topLayoutGuide.length - self.bottomLayoutGuide.length);
+}
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
-        [self loadPDFView];
-    }
+    [self loadPDFView];
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    self.edgesForExtendedLayout = UIRectEdgeNone;
-    self.view.backgroundColor = [UIColor whiteColor];
+- (void) viewWillDisappear:(BOOL)animated
+{
+    
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
 }
 
 #pragma mark - ILPDFViewController
@@ -59,27 +88,53 @@
     [self loadPDFView];
 }
 
-// Override to customize constraints.
-- (void)applyConstraintsToPDFView {
-    _pdfView.translatesAutoresizingMaskIntoConstraints = NO;
-    [NSLayoutConstraint activateConstraints:@[
-        [_pdfView.leadingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.leadingAnchor],
-        [_pdfView.trailingAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.trailingAnchor],
-        [_pdfView.topAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.topAnchor],
-        [_pdfView.bottomAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.bottomAnchor]
-    ]];
-}
-
 #pragma mark - Private
 
 - (void)loadPDFView {
-    if (_pdfView.superview != nil) {
-        [_pdfView removeFromSuperview];
-    }
+    [_pdfView removeFromSuperview];
     _pdfView = [[ILPDFView alloc] initWithDocument:_document];
     [self.view addSubview:_pdfView];
-    [self applyConstraintsToPDFView];
 }
+
+#pragma mark - KVO
+
+- (void) showSignatureViewController:(NSNotification *) notification {
+    
+    if ([notification.object isKindOfClass:[ILPDFFormSignatureField class]]) {
+        signatureField = notification.object;
+    }
+    NSBundle *bundle = [NSBundle bundleForClass:ILPDFSignatureController.class];
+    signatureController = [[ILPDFSignatureController alloc] initWithNibName:@"ILPDFSignatureController" bundle:bundle];
+    signatureController.expectedSignSize = signatureField.frame.size;
+    signatureController.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+    signatureController.delegate = self;
+    [self presentViewController:signatureController animated:YES completion:nil];
+    
+}
+
+- (UIImage *)imageFromColor:(UIColor *)color {
+    CGRect rect = CGRectMake(0, 0, 1, 1);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
+}
+
+
+#pragma mark - Signature Controller Delegate
+
+- (void) signedWithImage:(UIImage*) signatureImage {
+    
+    [signatureField removeButtonTitle];
+    signatureField.signatureImage.image = signatureImage;
+    [signatureField informDelegateAboutNewImage];
+    signatureField = nil;
+    
+}
+
 
 
 

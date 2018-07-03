@@ -1,6 +1,6 @@
 // ILPDFFormContainer.m
 //
-// Copyright (c) 2018 Derek Blair
+// Copyright (c) 2016 Derek Blair
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -164,7 +164,7 @@
     NSString *base = components[0];
     if ([components count] == 1) {
         NSMutableArray *arr = node[base];
-        if (arr == nil || ![arr isKindOfClass:NSMutableArray.class]) {
+        if (arr == nil) {
             arr = [NSMutableArray arrayWithObject:final];
             node[base] = arr;
         } else {
@@ -232,12 +232,10 @@
 
         ILPDFWidgetAnnotationView *add = nil;
         if ([form associatedWidget] == nil) {
-            add = [form createWidgetAnnotationViewForPageView:pageView];
-            if (add) {
-                add.page = form.page;
-                wasAdded = YES;
-                [views addObject:add];
-            }
+            add = [form createWidgetAnnotationViewForPageView:pageView ];
+            add.page = form.page;
+            wasAdded = YES;
+            [views addObject:add];
         } else {
             add = [form associatedWidget];
         }
@@ -259,8 +257,7 @@
 
         for (UIView *v in views) {
             if ([v isKindOfClass:[ILPDFFormChoiceField class]]) {
-                UIView *scrollV = pdfView.pdfView.scrollView;
-                [scrollV addSubview:v];
+                [pdfView.pdfView.scrollView addSubview:v];
                 ((ILPDFFormChoiceField *)v).parentView = pdfView;
             }
         }

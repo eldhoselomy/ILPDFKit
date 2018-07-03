@@ -1,6 +1,6 @@
 // ILPDFForm.h
 //
-// Copyright (c) 2018 Derek Blair
+// Copyright (c) 2016 Derek Blair
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
 
 typedef NS_OPTIONS(NSUInteger, ILPDFAnnotationFlags) {
     ILPDFAnnotationFlagInvisible      = 1 << 0,
@@ -215,18 +214,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)reset;
 
-
-/**---------------------------------------------------------------------------------------
- * @name Associated Actions
- *  ---------------------------------------------------------------------------------------
- */
-
-/** The AA dictionary for the annotation. */
-@property (nonatomic, strong, readonly, nullable) ILPDFDictionary *additionalActions;
-
-/** The 'F' format Javascipt action code if set. */
-@property (nonatomic, strong, readonly, nullable) NSString *formatScript;
-
 /**---------------------------------------------------------------------------------------
  * @name Rendering
  *  ---------------------------------------------------------------------------------------
@@ -240,9 +227,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** Returns a view to represent the form.
  
+ @param vwidth The width of the superview bounds.
  @return A new view representing the form.
  */
-- (nullable ILPDFWidgetAnnotationView *)createWidgetAnnotationViewForPageView:(UIView *)pageView;
+- (ILPDFWidgetAnnotationView *)createWidgetAnnotationViewForPageView:(UIView *)pageView;
 
 /**---------------------------------------------------------------------------------------
  * @name KVO

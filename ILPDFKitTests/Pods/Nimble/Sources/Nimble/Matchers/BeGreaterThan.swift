@@ -1,38 +1,35 @@
 import Foundation
 
+
 /// A Nimble matcher that succeeds when the actual value is greater than the expected value.
-public func beGreaterThan<T: Comparable>(_ expectedValue: T?) -> Predicate<T> {
-    let errorMessage = "be greater than <\(stringify(expectedValue))>"
-    return Predicate.simple(errorMessage) { actualExpression in
-        if let actual = try actualExpression.evaluate(), let expected = expectedValue {
-            return PredicateStatus(bool: actual > expected)
-        }
-        return .fail
+public func beGreaterThan<T: Comparable>(expectedValue: T?) -> NonNilMatcherFunc<T> {
+    return NonNilMatcherFunc { actualExpression, failureMessage in
+        failureMessage.postfixMessage = "be greater than <\(stringify(expectedValue))>"
+        return try actualExpression.evaluate() > expectedValue
     }
 }
 
 /// A Nimble matcher that succeeds when the actual value is greater than the expected value.
-public func beGreaterThan(_ expectedValue: NMBComparable?) -> Predicate<NMBComparable> {
-    return Predicate.fromDeprecatedClosure { actualExpression, failureMessage in
+public func beGreaterThan(expectedValue: NMBComparable?) -> NonNilMatcherFunc<NMBComparable> {
+    return NonNilMatcherFunc { actualExpression, failureMessage in
         failureMessage.postfixMessage = "be greater than <\(stringify(expectedValue))>"
         let actualValue = try actualExpression.evaluate()
-        let matches = actualValue != nil
-            && actualValue!.NMB_compare(expectedValue) == ComparisonResult.orderedDescending
+        let matches = actualValue != nil && actualValue!.NMB_compare(expectedValue) == NSComparisonResult.OrderedDescending
         return matches
-    }.requireNonNil
+    }
 }
 
 public func ><T: Comparable>(lhs: Expectation<T>, rhs: T) {
     lhs.to(beGreaterThan(rhs))
 }
 
-public func > (lhs: Expectation<NMBComparable>, rhs: NMBComparable?) {
+public func >(lhs: Expectation<NMBComparable>, rhs: NMBComparable?) {
     lhs.to(beGreaterThan(rhs))
 }
 
-#if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
+#if _runtime(_ObjC)
 extension NMBObjCMatcher {
-    @objc public class func beGreaterThanMatcher(_ expected: NMBComparable?) -> NMBObjCMatcher {
+    public class func beGreaterThanMatcher(expected: NMBComparable?) -> NMBObjCMatcher {
         return NMBObjCMatcher(canMatchNil: false) { actualExpression, failureMessage in
             let expr = actualExpression.cast { $0 as? NMBComparable }
             return try! beGreaterThan(expected).matches(expr, failureMessage: failureMessage)
