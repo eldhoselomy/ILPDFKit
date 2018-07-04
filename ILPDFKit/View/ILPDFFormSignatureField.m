@@ -21,6 +21,8 @@
 // THE SOFTWARE.
 
 #import "ILPDFFormSignatureField.h"
+#import <ILPDFKit/ILPDFKit.h>
+
 
 @implementation ILPDFFormSignatureField
 
@@ -30,8 +32,8 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.layer.borderColor = [UIColor grayColor].CGColor;
-        self.layer.borderWidth = 1.0;
+        //self.layer.borderColor = [UIColor grayColor].CGColor;
+        //self.layer.borderWidth = 1.0;
         [self addSignatureImageViewWithFrame:frame];
         [self addButtonWithFrame:frame];
     }
@@ -45,8 +47,8 @@
     CGRect signatureFrame = frame;
     signatureFrame.origin = CGPointMake(0, 0);
     self.signatureImage = [[UIImageView alloc] initWithFrame:signatureFrame];
-    self.signatureImage.backgroundColor = [UIColor greenColor];
-    
+    self.signatureImage.backgroundColor = ILPDFWidgetColor;
+    //self.signatureImage.contentMode = UIViewContentModeScaleAspectFill;
     [self addSubview:self.signatureImage];
     
 }
@@ -60,7 +62,7 @@
     
     self.signatureButton = [[UIButton alloc] initWithFrame:buttonFrame];
     [self.signatureButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    [self.signatureButton setTitle:@"Tap to Sign" forState:UIControlStateNormal];
+    //[self.signatureButton setTitle:@"Tap to Sign" forState:UIControlStateNormal];
     [self.signatureButton addTarget:self action:@selector(openSignatureView) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.signatureButton];
     

@@ -87,7 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (NSArray *)formsWithType:(ILPDFFormType)type;
 
-
+- (NSArray *)allForms;
 
 /**---------------------------------------------------------------------------------------
  * @name Getting Visual Representations

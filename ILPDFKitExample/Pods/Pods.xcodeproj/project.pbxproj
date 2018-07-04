@@ -453,11 +453,12 @@
 				LastUpgradeCheck = 0700;
 				TargetAttributes = {
 					665E2A3B777A58B7E2FA4BA7EC7769EA = {
-						DevelopmentTeam = 82NZNX6NK2;
+						DevelopmentTeam = 85PRRDP9ML;
+						LastSwiftMigration = 0940;
 						ProvisioningStyle = Automatic;
 					};
 					C992F425FCF3AC28FE1FAD6A3DFF8E0D = {
-						DevelopmentTeam = 82NZNX6NK2;
+						DevelopmentTeam = 85PRRDP9ML;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -589,13 +590,14 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5DE7E3E9C0F65F2ED867F57790482639 /* ILPDFKit.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 82NZNX6NK2;
+				DEVELOPMENT_TEAM = 85PRRDP9ML;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -613,6 +615,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -629,7 +632,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 82NZNX6NK2;
+				DEVELOPMENT_TEAM = 85PRRDP9ML;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -666,7 +669,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 82NZNX6NK2;
+				DEVELOPMENT_TEAM = 85PRRDP9ML;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -735,13 +738,14 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5DE7E3E9C0F65F2ED867F57790482639 /* ILPDFKit.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 82NZNX6NK2;
+				DEVELOPMENT_TEAM = 85PRRDP9ML;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -759,6 +763,8 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";

@@ -11,80 +11,83 @@ import ILPDFKit
 
 class StartViewController: ILPDFViewController {
 
+    let name = ["PT Eval","PT Reassessment",".testAA","testA"]
+    var index = 1
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        let document = ILPDFDocument(resource:"testA")
+        let document = ILPDFDocument(resource:"PT Eval")
         self.document = document
         let printButton = UIBarButtonItem(title: "Save Static PDF", style: .plain, target: self, action: #selector(save))
         self.navigationItem.setRightBarButton(printButton, animated: false)
         
-    }
+        let LeftButton = UIBarButtonItem(title: "Change PDF", style: .plain, target: self, action: #selector(pdfPageChanged))
+        self.navigationItem.setLeftBarButton(LeftButton, animated: false)
 
-    func pdfPageChanged() {
-        for form in document!.forms{
-            if let fm = form as? ILPDFForm{
-                
-                if fm.formType == .button {
-                    if isGroupedButton(selectedForm: fm){
-                        fm.value = fm.exportValue
-                    }
-                    //print(fm.exportValue)
-                }
-                if fm.formType == .choice{
-                    print("-------------------")
-                    //dump(fm.options)
-                }
-                if fm.formType == .signature{
-//                    if let an = fm.associatedWidget() as? ILPDFFormSignatureField{
-//                        an.signatureImage =  #imageLiteral(resourceName: "signature")
-//                    }
-//                    print(fm.uname ?? "")
-//                    print(fm.value)
-                    //fm.
-                    //showSignatureVC(fm)
-                    //print(fm.uname)
-                    //let image = UIImage(color: .red, size: fm.frame.size) ?? #imageLiteral(resourceName: "signature")
-                    //signed(with: image, sig: fm)
-                }
-                
-                
-            }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+    }
+    
+    
+    
+
+    @objc func pdfPageChanged() {
+        if index < name.count{
+            
+        }else{
+            index = 0
         }
+        let document = ILPDFDocument(resource:name[index])
+        self.document = document
+        index += 1
+        
+//        for form in document!.forms.allForms(){
+//            if let fm = form as? ILPDFForm{
+//
+//                if fm.formType == .choice{
+//                    print("-------------------")
+//                    //dump(fm.options)
+//                }
+//                if fm.formType == .signature{
+////                    if let an = fm.associatedWidget() as? ILPDFFormSignatureField{
+////                        an.signatureImage =  #imageLiteral(resourceName: "signature")
+////                    }
+////                    print(fm.uname ?? "")
+////                    print(fm.value)
+//                    //fm.
+//                    //showSignatureVC(fm)
+//                    //print(fm.uname)
+//                    //let image = UIImage(color: .red, size: fm.frame.size) ?? #imageLiteral(resourceName: "signature")
+//                    //signed(with: image, sig: fm)
+//                }
+//
+//
+//            }
+//        }
         //document!.forms.setValue("Yes", forFormWithName: "Sex[0]")
         
         
     }
     
     func isGroupedButton(selectedForm:ILPDFForm)->Bool{
-        let forms = document!.forms!
+        let forms = document!.forms!.allForms()
         return (forms.filter{($0 as! ILPDFForm).name == selectedForm.name}).count > 1
     }
     
 
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        pdfPageChanged()
-    }
-    
+//
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//        pdfPageChanged()
+//    }
+//
 
     //MARK: Print Responder
     
     @objc func save(sender:AnyObject?) {
-        
-        
-        
-        let forms = document!.forms!
-        for item  in forms{
-            if (item as! ILPDFForm).formType == .signature{
-                if let an = (item as! ILPDFForm).associatedWidget() as? ILPDFFormSignatureField{
-                    an.signatureImage.image = #imageLiteral(resourceName: "signature")
-                    an.informDelegateAboutNewImage()
-                    an.signatureButton.setTitle("", for: .normal)
-                    
-                }
-            }
-        }
         
         
         let data = document?.savedStaticPDFData()
@@ -122,21 +125,10 @@ class StartViewController: ILPDFViewController {
 
 }
 
-extension ILPDFFormContainer: Sequence {
-    public func makeIterator() -> NSFastEnumerationIterator {
-        return NSFastEnumerationIterator(self as NSFastEnumeration)
-    }
-}
-public extension UIImage {
-    public convenience init?(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
-        let rect = CGRect(origin: .zero, size: size)
-        UIGraphicsBeginImageContextWithOptions(rect.size, false, 0.0)
-        color.setFill()
-        UIRectFill(rect)
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        guard let cgImage = image?.cgImage else { return nil }
-        self.init(cgImage: cgImage)
-    }
-}
+//
+//extension ILPDFFormContainer: Sequence {
+//    public func makeIterator() -> NSFastEnumerationIterator {
+//        return NSFastEnumerationIterator(self as NSFastEnumeration)
+//    }
+//}
+

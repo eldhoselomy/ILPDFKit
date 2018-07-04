@@ -37,7 +37,7 @@
 
 - (IBAction)signatureAction:(UIButton *)sender {
     
-    [self.delegate signedWithImage:[self.signatureView createImageFromSignWithMaxWidth:self.expectedSignSize.width andMaxHeight:self.expectedSignSize.height]];
+    [self.delegate signedWithImage:[self.signatureView createImageFromSignWithMaxWidth:self.expectedSignSize.width*2 andMaxHeight:self.expectedSignSize.height*2]];
     [self dismissViewControllerAnimated:YES completion:nil];
     
 }

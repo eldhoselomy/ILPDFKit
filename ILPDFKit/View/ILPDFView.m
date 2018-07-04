@@ -54,6 +54,7 @@
 
 
         _pdfView = [[UIWebView alloc] initWithFrame:self.bounds];
+        _pdfView.backgroundColor = [UIColor whiteColor];
         [_pdfView.scrollView setContentInset:UIEdgeInsetsMake(0, 0, self.bounds.size.height/2, 0)];
         _pdfView.scalesPageToFit = YES;
         _pdfView.scrollView.delegate = self;
